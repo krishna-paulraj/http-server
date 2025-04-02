@@ -3,9 +3,12 @@
   "description": "Build your own HTTP server challenge, from CodeCrafters",
   "type": "module",
   "scripts": {
-    "dev": "bun run app/main.ts"
+    "dev": "nodemon run app/main.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.9"
   }
 }
