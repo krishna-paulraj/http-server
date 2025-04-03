@@ -11,6 +11,8 @@ const server = net.createServer((socket) => {
     } else {
       socket.write(Buffer.from("HTTP/1.1 200 OK\r\n\r\n"));
     }
+
+    socket.end();
   });
 });
 
