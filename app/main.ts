@@ -12,10 +12,14 @@ const server = net.createServer((socket) => {
 
   socket.on("data", (data) => {
     const request = data.toString();
-    const method = data.toString().split(" ")[0];
+    const method = request.split(" ")[0];
     const path = request.split(" ")[1];
     const param = path.split("/")[1];
     const args = process.argv;
+    let acceptEncoding = "";
+    if (request.includes("Accept-Encoding")) {
+      acceptEncoding = request.split("Accept-Encoding: ")[1].split("\r")[0];
+    }
 
     switch (param) {
       case "": {
@@ -24,9 +28,15 @@ const server = net.createServer((socket) => {
       }
       case "echo": {
         const word = request.split("/")[2].split(" ")[0];
-        sendResponse(
-          `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${word.length}\r\n\r\n${word}`,
-        );
+        if (acceptEncoding == "gzip") {
+          sendResponse(
+            `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: ${word.length}\r\n\r\n${word}`,
+          );
+        } else {
+          sendResponse(
+            `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${word.length}\r\n\r\n${word}`,
+          );
+        }
         break;
       }
       case "user-agent": {
