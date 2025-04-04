@@ -17,6 +17,7 @@ const server = net.createServer((socket) => {
     const param = path.split("/")[1];
     const args = process.argv;
     let acceptEncoding = "";
+
     if (request.includes("Accept-Encoding")) {
       acceptEncoding = request.split("Accept-Encoding: ")[1].split("\r")[0];
     }
@@ -28,7 +29,7 @@ const server = net.createServer((socket) => {
       }
       case "echo": {
         const word = request.split("/")[2].split(" ")[0];
-        if (acceptEncoding == "gzip") {
+        if (acceptEncoding.includes("gzip")) {
           sendResponse(
             `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: ${word.length}\r\n\r\n${word}`,
           );
